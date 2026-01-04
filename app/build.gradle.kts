@@ -56,7 +56,18 @@ dependencies {
 
     // The Support Library (Makes the MobileNet preprocessing easy!)
     implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
-    implementation("org.tensorflow:tensorflow-lite-gpu:2.14.0")  // Recommended for FP16 models
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.14.0")
+    implementation(libs.androidx.tools.core)  // Recommended for FP16 models
+    implementation("com.google.guava:guava:33.2.1-android")
+
+    // Camera dependency
+    val cameraxVersion = "1.3.4"
+
+
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion") //This is the "engine" that talks to the phone's physical hardware
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion") // It ensures the camera shuts off when the user leaves
+    implementation("androidx.camera:camera-view:$cameraxVersion")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
