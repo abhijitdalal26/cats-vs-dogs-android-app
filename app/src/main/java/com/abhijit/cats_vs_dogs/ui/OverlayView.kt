@@ -1,12 +1,12 @@
-package com.abhijit.cats_vs_dogs
+package com.abhijit.cats_vs_dogs.ui
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import com.abhijit.cats_vs_dogs.ml.Detection
 
 /**
  * Custom View that draws bounding boxes over the camera feed.

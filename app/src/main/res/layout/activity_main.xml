@@ -46,7 +46,7 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
-            <com.abhijit.cats_vs_dogs.OverlayView
+            <com.abhijit.cats_vs_dogs.ui.OverlayView
                 android:id="@+id/overlayView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
