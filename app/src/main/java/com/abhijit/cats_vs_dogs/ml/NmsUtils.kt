@@ -1,7 +1,6 @@
 package com.abhijit.cats_vs_dogs.ml
 
 import android.graphics.RectF
-import kotlin.compareTo
 
 // will remove extra predicted boxes
 object NmsUtils {

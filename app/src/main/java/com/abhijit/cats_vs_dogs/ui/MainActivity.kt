@@ -1,75 +1,41 @@
 package com.abhijit.cats_vs_dogs.ui
-import com.abhijit.cats_vs_dogs.ml.Detection
-import com.abhijit.cats_vs_dogs.ml.NmsUtils
-import com.abhijit.cats_vs_dogs.ml.YoloPostProcessorLive
-import com.abhijit.cats_vs_dogs.ml.YoloEngine
-import com.abhijit.cats_vs_dogs.camera.toBitmap
-import com.abhijit.cats_vs_dogs.ui.ImagePicker
-
 
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
-
-// For camera
 import android.view.View
-import android.content.pm.PackageManager
-import android.graphics.RectF
-
-// CameraX Core
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-
-// CameraX UI & Concurrency
-import androidx.camera.view.PreviewView
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-
-// Taking camera feed
-import androidx.camera.core.resolutionselector.ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER
-
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.AspectRatio
+import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import org.tensorflow.lite.DataType
-import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.support.common.FileUtil
-
-import org.tensorflow.lite.support.common.ops.NormalizeOp
-import org.tensorflow.lite.support.image.ImageProcessor
-import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.support.image.ops.ResizeOp
-import androidx.core.graphics.createBitmap
 import com.abhijit.cats_vs_dogs.R
 import com.abhijit.cats_vs_dogs.camera.CameraManager
+import com.abhijit.cats_vs_dogs.ml.YoloEngine
 import com.abhijit.cats_vs_dogs.ml.YoloOutputParser
+import com.abhijit.cats_vs_dogs.ml.YoloPostProcessorLive
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var imageView: ImageView
     private lateinit var viewFinder: PreviewView // this to show camera output
     private lateinit var btnUpload: Button
     private lateinit var btnLiveCamera: Button
     private lateinit var resultText: TextView
-
-    private val labels = listOf("Cat", "Dog")
-
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var overlayView: OverlayView // it act as canvas to draw bounding box
     private var lastInferenceTime = 0L
     private val INFERENCE_INTERVAL_MS = 300 // ~3 FPS
     private lateinit var yoloEngine: YoloEngine
     private lateinit var cameraManager: CameraManager
+    private var isLiveCameraRunning = false
 
 
 
@@ -85,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // For uploadButton take image from gallery and make inference
     private val getImage = registerForActivityResult<String, Uri?>(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -131,6 +98,11 @@ class MainActivity : AppCompatActivity() {
             viewFinder.visibility = View.GONE
             overlayView.visibility = View.GONE
 
+            if (isLiveCameraRunning) {
+                cameraManager.stop()
+                isLiveCameraRunning = false
+            }
+
             getImage.launch("image/*")
         }
 
@@ -144,6 +116,7 @@ class MainActivity : AppCompatActivity() {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED
             ) {
+                isLiveCameraRunning = true
                 cameraManager.start(this)
             } else {
                 requestCameraPermission.launch(Manifest.permission.CAMERA)
@@ -176,12 +149,14 @@ class MainActivity : AppCompatActivity() {
                     // 2 Extract information from raw prediction done by tflite
                     val detections = YoloPostProcessorLive.processOutput(
                         rawOutput,
-                        overlayView
+                        overlayView.width,
+                        overlayView.height
                     )
 
                     // 3️ update UI
                     runOnUiThread {
                         overlayView.setResults(detections)
+                        overlayView.invalidate()
 
                         val best = detections.maxByOrNull { it.confidence }
                         resultText.text =
@@ -217,9 +192,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onPause() {
+        super.onPause()
+
+        if (isLiveCameraRunning) {
+            cameraManager.stop()
+            isLiveCameraRunning = false
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown() // Kills the background thread that runs the camera
+        yoloEngine.close()
     }
 }
 
