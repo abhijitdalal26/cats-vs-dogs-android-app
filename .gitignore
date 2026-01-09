@@ -2,6 +2,14 @@
 build/
 app/build/
 
+.ipynb_checkpoints/
+
+bin/
+gen/
+out/
+
+.gradle/
+
 local.properties
 
 .idea/
@@ -18,3 +26,5 @@ captures/
 
 *.jks
 *.keystore
+*.apk
+*.aab

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">cats-vs-dogs</string>
+    <string name="app_name">PawVision</string>
     <string name="desc_image_preview">Image to be classified</string>
     <string name="button_1_text">Upload Image</string>
     <string name="button_2_text">Start Live Camera</string>

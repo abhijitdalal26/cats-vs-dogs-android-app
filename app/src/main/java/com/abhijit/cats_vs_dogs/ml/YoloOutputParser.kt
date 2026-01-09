@@ -30,8 +30,8 @@ object YoloOutputParser {
                 bestScore = dogScore
                 bestLabel = "Dog"
             }
-
         }
+
         return if (bestLabel != null && bestScore > CONFIDENCE_THRESHOLD) {
             Pair(bestLabel, bestScore)
         } else {
