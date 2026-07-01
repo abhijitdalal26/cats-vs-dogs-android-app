@@ -9,8 +9,8 @@
 
 I built this right after finishing Andrew Ng's **Machine Learning Specialization**. I wanted to see a model go beyond a notebook, so I trained a classifier on the classic Kaggle Dogs vs Cats dataset and turned it into a real Android app.
 
-- **v1** — a `MobileNetV3Large` transfer-learning classifier (Keras), converted to an int8 TFLite model. Single-shot classification on a gallery image.
-- **v2 (current)** — retrained as a **YOLO11** detector so the app can draw a live bounding box and run continuously off the camera feed, not just on uploaded photos.
+- **v1** - a `MobileNetV3Large` transfer-learning classifier (Keras), converted to an int8 TFLite model. Single-shot classification on a gallery image.
+- **v2 (current)** - retrained as a **YOLO11** detector so the app can draw a live bounding box and run continuously off the camera feed, not just on uploaded photos.
 
 Training notebook (Kaggle, free to fork and re-run yourself): **[Dog vs Cat Detection](https://www.kaggle.com/code/abhijitdalal26/dog-vs-cat-detection/)**
 
@@ -36,8 +36,8 @@ Detected a real stray cat outside, live, at 92% confidence:
 
 ## Try it
 
-- **APK** — zipped in this repo as [`PawVision.zip`](PawVision.zip). Download, unzip, install (you'll need to allow "install unknown apps").
-- **Build it yourself** — clone the repo and open in Android Studio (`minSdk 26`, `compileSdk 35`).
+- **APK** - zipped in this repo as [`PawVision.zip`](PawVision.zip). Download, unzip, install (you'll need to allow "install unknown apps").
+- **Build it yourself** - clone the repo and open in Android Studio (`minSdk 26`, `compileSdk 35`).
 
 ## License
 
