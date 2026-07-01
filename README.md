@@ -41,4 +41,4 @@ Detected a real stray cat outside, live, at 92% confidence:
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).
