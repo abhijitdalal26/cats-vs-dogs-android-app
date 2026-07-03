@@ -32,7 +32,17 @@ Detected a real stray cat outside, live, at 92% confidence:
 ## Tech stack
 
 **App:** Kotlin, CameraX, TensorFlow Lite (YOLO11, float16), Android Views + Canvas overlay
-**Model training:** Python, TensorFlow/Keras, MobileNetV3Large transfer learning, Kaggle
+**Model training:** Python, TensorFlow/Keras, MobileNetV3Large transfer learning, YOLO11, Kaggle
+
+## Repo contents
+
+```
+app/                       Android app (Kotlin, CameraX, TFLite inference)
+model/                     Exported TFLite model(s)
+data/                      Sample/reference data
+Cats Vs Dogs.ipynb         Local copy of the training notebook (also on Kaggle, see above)
+PawVision.zip              Prebuilt debug APK
+```
 
 ## Try it
 
