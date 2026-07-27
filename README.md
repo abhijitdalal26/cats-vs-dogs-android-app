@@ -5,8 +5,6 @@
 <h1 align="center">PawVision</h1>
 <p align="center">Real-time cat vs dog detection on Android, running fully on-device.</p>
 
-## Story
-
 I built this right after finishing Andrew Ng's **Machine Learning Specialization**. I wanted to see a model go beyond a notebook, so I trained a classifier on the classic Kaggle Dogs vs Cats dataset and turned it into a real Android app.
 
 - **v1** - a `MobileNetV3Large` transfer-learning classifier (Keras), converted to an int8 TFLite model. Single-shot classification on a gallery image.
